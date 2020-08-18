@@ -1,5 +1,7 @@
 'use strict';
 
+// Wayne
+
 //Below is an object containing different color palettes that you will show
 //Palettes from ColorBrewer (http://colorbrewer2.org/)
 const COLORS_9 = {
@@ -10,21 +12,20 @@ const COLORS_9 = {
   Purples: ['#fcfbfd','#efedf5','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#54278f','#3f007d'],
 };
 
-/* Your code goes here! */
-
 //Create a variable `h1` that refers to the `<h1>` element in the DOM.
-
+let h1Elem = document.querySelector('h1');
 
 //Change the `textContent` of the `<h1>` element to be "Which Swatch?"
-
+h1Elem.textContent = 'Which Swatch?'
 
 //Somehow the rainbow icon image was included without an alt tag! Set its `alt`
 //attribute to be "A beautiful rainbow".
-
+let iconImageElem = document.querySelector('img');
+iconImageElem.alt = 'A beautiful rainbow';
 
 //Give the image the Bootstrap-provided `float-right` CSS class to make it float
 //to the right of the screen
-
+iconImageElem.classList.add('float-right');
 
 /*Define a function `createColorBox()` that takes in two parameters: a color 
 string (e.g., "blue") and a numeric size (in pixels, e.g., 100). The function 
@@ -38,8 +39,15 @@ shoukld do the following:
 You can test this function by logging out the returned value and checking its
 attributes.
 */
-
-
+// ?????
+function createColorBox(colorString, pxSize) {
+  let newDiv = document.createElement('div');
+  newDiv.classList.add('d-inline-block');
+  newDiv.style.backgroundColor = colorString;
+  newDiv.style.width = pxSize + 'px';
+  newDiv.style.height = pxSize + 'px';
+  return newDiv;
+}
 
 /* Define a function `getElementWidth()` that takes in a DOM element (not a 
 string!). This function should return the width in pixels (a number) of that
@@ -49,6 +57,10 @@ element.
    width and height. Return the `width` value of that object.
 */
 
+function getElementWidth(domElem){
+  let info = domElem.getBoundingClientRect();
+  return info.width;
+}
 
 
 /* Define a function `renderPaletteRow()` that takes in two arguments: array of 
@@ -71,8 +83,17 @@ browser window unless you refresh.
 
 You should NOT include any test calls when running Jest tests!
 */
+function renderPaletteRow(colorArray, domParent){
+  let colorDiv = document.createElement('div');
+  let boxWidth = getElementWidth(domParent) / colorArray.length;
 
+  for(let colorCode of colorArray){
+    let colBox = createColorBox(colorCode, boxWidth);
+    colorDiv.appendChild(colBox);
+  }
 
+  domParent.appendChild(colorDiv);
+}
 
 /* Define a function `renderPaletteTable()` that takes no arguments and renders 
 a color palette row for each of the palettes in the `COLORS_9` object into the 
@@ -85,12 +106,19 @@ Tip: note that `COLORS_9` is an object, not an array! You'll need to use a
 Call your `renderPaletteTable()` method to display all the color palettes!
 */
 
+function renderPaletteTable(){
+  let domElem = document.getElementById('content');
+  for(let colPalettes in COLORS_9){
+    renderPaletteRow(COLORS_9[colPalettes], domElem);
+  }
+}
 
+renderPaletteTable();
 
 //Finally, remove the paragraph in the header that explains how to complete the 
 //problem.
-
-
+let docHeader = document.querySelector('p');
+docHeader.textContent = '';
 
 //Make functions and variables available to tester. DO NOT MODIFY THIS.
 if(typeof module !== 'undefined' && module.exports){
